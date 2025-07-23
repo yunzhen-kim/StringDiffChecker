@@ -17,6 +17,7 @@ TEST_F(SdcFixture, checkLengthScoreCase) {
 	checkLength("A", "BB", 0);
 	checkLength("AAABB", "BAA", 20);
 	checkLength("AA", "AAE", 30);
+	checkLength("AAAAAAAAAAAAA", "ASGB", 0);
 }
 
 
