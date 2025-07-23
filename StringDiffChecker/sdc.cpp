@@ -33,23 +33,32 @@ public:
 	int check(string str1, string str2) {
 		int score = 0;
 		int totalAlphabetCnt = str1.length() + str2.length();
-		int sameCnt = 0;
-		for (char c : str1) {
-			if (str2.find(c) != string::npos) {
-				++sameCnt;				
-			}
-		}
-		
-		for (char c : str2) {
-			if (str1.find(c) != string::npos) {
-				++sameCnt;				
-			}			
-		}
-	
+		if (totalAlphabetCnt == 0) return 0;
+
+		int sameCnt = countSameAlphabetForEachString(str1, str2);	
 		if (sameCnt == 0) return 0;
 		
+		return calculateScore(sameCnt, totalAlphabetCnt);
+	}
+private:
+	int countSameAlphabetForEachString(const string& str1, const string& str2) {
+		int count = 0;
+		for (char c : str1) {
+			if (str2.find(c) != string::npos) {
+				++count;
+			}
+		}
+
+		for (char c : str2) {
+			if (str1.find(c) != string::npos) {
+				++count;
+			}
+		}
+		return count;
+	}
+
+	int calculateScore(const int sameCnt, const int totalAlphabetCnt) {
 		double ratio = static_cast<double>(sameCnt) / totalAlphabetCnt;
-		score = static_cast<int>(std::round(ratio * 40));
-		return score;		
-	}	
+		return static_cast<int>(std::round(ratio * 40));
+	}
 };
