@@ -62,3 +62,15 @@ private:
 		return static_cast<int>(std::round(ratio * 40));
 	}
 };
+
+class StringDiffChecker {
+public:
+	int check(const string& str1, const string& str2) {
+		int lengthScore = slc.check(str1, str2);
+		int alphabetScore = sac.check(str1, str2);
+		return lengthScore + alphabetScore;
+	}
+private:
+	StringLengthChecker slc;
+	StringAlphabetChecker sac;
+};
