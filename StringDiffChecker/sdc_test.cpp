@@ -6,8 +6,14 @@ using namespace testing;
 class SdcFixture : public Test {
 public:
 	StringLengthChecker sdc;
+	StringAlphabetChecker sac;
 	void checkLength(const string& str1, const string& str2, int expected_score) {
 		int score = sdc.check(str1, str2);
+		EXPECT_EQ(score, expected_score);
+	}
+
+	void checkAlphabet(const string& str1, const string& str2, int expected_score) {
+		int score = sac.check(str1, str2);
 		EXPECT_EQ(score, expected_score);
 	}
 };
@@ -20,4 +26,11 @@ TEST_F(SdcFixture, checkLengthScoreCase) {
 	checkLength("AAAAAAAAAAAAA", "ASGB", 0);
 }
 
+TEST_F(SdcFixture, checkAlphabetScoreCase) {
+	checkAlphabet("ASD", "DSA", 40);
+	checkAlphabet("A", "BB", 0);
+	checkAlphabet("AAABB", "BAA", 40);
+	checkAlphabet("AA", "AAE", 32);
+	checkAlphabet("AAAAAAAAAAAAA", "ASGB", 33);
+}
 
