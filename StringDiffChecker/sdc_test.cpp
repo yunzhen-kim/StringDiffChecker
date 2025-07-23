@@ -12,19 +12,10 @@ public:
 	}
 };
 
-TEST_F(SdcFixture, checkLength60ScoreCase) {
+TEST_F(SdcFixture, checkLengthScoreCase) {
 	checkLength("ASD", "DSA", 60);
-}
-
-TEST_F(SdcFixture, checkLength0ScoreCase) {
 	checkLength("A", "BB", 0);
-}
-
-TEST_F(SdcFixture, checkLength20ScoreCase) {
 	checkLength("AAABB", "BAA", 20);
-}
-
-TEST_F(SdcFixture, checkLength30ScoreCase) {
 	checkLength("AA", "AAE", 30);
 }
 
