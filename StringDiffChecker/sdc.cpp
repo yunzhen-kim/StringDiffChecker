@@ -1,7 +1,10 @@
 #include <string>
 #include <cmath>
+#include <iostream>
 
 using std::string;
+using std::cout;
+using std::endl;
 
 // 글자 수: 60점
 // 알파벳 : 40점
@@ -23,4 +26,51 @@ private:
 		double ratio = 1.0 - (static_cast<double>(big_len - short_len) / short_len);
 		return static_cast<int>(std::round(ratio * 60));
 	}
+};
+
+class StringAlphabetChecker {
+public:
+	int check(string str1, string str2) {
+		int score = 0;
+		int totalAlphabetCnt = str1.length() + str2.length();
+		if (totalAlphabetCnt == 0) return 0;
+
+		int sameCnt = countSameAlphabetForEachString(str1, str2);	
+		if (sameCnt == 0) return 0;
+		
+		return calculateScore(sameCnt, totalAlphabetCnt);
+	}
+private:
+	int countSameAlphabetForEachString(const string& str1, const string& str2) {
+		int count = 0;
+		for (char c : str1) {
+			if (str2.find(c) != string::npos) {
+				++count;
+			}
+		}
+
+		for (char c : str2) {
+			if (str1.find(c) != string::npos) {
+				++count;
+			}
+		}
+		return count;
+	}
+
+	int calculateScore(const int sameCnt, const int totalAlphabetCnt) {
+		double ratio = static_cast<double>(sameCnt) / totalAlphabetCnt;
+		return static_cast<int>(std::round(ratio * 40));
+	}
+};
+
+class StringDiffChecker {
+public:
+	int check(const string& str1, const string& str2) {
+		int lengthScore = slc.check(str1, str2);
+		int alphabetScore = sac.check(str1, str2);
+		return lengthScore + alphabetScore;
+	}
+private:
+	StringLengthChecker slc;
+	StringAlphabetChecker sac;
 };
