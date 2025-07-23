@@ -17,10 +17,10 @@ public:
 	}
 private:
 	int calculatePartScore(int str1_len, int str2_len) {
-		int gap = abs(str1_len - str2_len);
+		int big_len = std::max(str1_len, str2_len);
 		int short_len = std::min(str1_len, str2_len);
-		if (gap >= short_len * 2) return 0;
-		double ratio = 1.0 - (static_cast<double>(gap) / short_len);
+		if (big_len >= short_len * 2) return 0;
+		double ratio = 1.0 - (static_cast<double>(big_len - short_len) / short_len);
 		return static_cast<int>(std::round(ratio * 60));
 	}
 };
