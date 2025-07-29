@@ -20,20 +20,28 @@ jobs:
         run: nuget restore StringDiffChecker.sln
 
       - name: Build solution
-        run: msbuild StringDiffChecker.sln /p:Configuration=Debug /p:platform=x86
+        run: msbuild StringDiffChecker.sln /p:Configuration=Debug
+
+      - name: Install Python (if not already)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
       - name: Run GoogleTest
         run: |
-          mkdir test-results
-          .\x64\Debug\StringDiffChecker.exe --gtest_output=xml:test-results\gtest-results.xml
+          .\x64\Debug\StringDiffChecker.exe --gtest_output=xml:gtest_results.xml
+
+      - name: Convert GTest XML to JUnit-compatible XML
+        run: |
+          python -c "import xml.etree.ElementTree as ET; tree = ET.parse('gtest_results.xml'); root = tree.getroot(); root.tag = 'testsuites'; tree.write('junit.xml')"
 
       - name: Publish test results
         uses: dorny/test-reporter@v1.6.0
         if: always()
         with:
           name: GoogleTest Results
-          path: test-results\gtest-results.xml
-          reporter: gtest
+          path: junit.xml
+          reporter: junit
 
       - name: Approve PR if all tests passed
         if: ${{ github.event_name == 'pull_request' && success() }}
