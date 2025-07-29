@@ -26,7 +26,7 @@ jobs:
         run: msbuild StringDiffChecker.sln /p:Configuration=Debug
 
       - name: Run GoogleTest
-        run: .\Tests\x64\Debug\StringDiffChecker.exe --gtest_output=xml:test_results.xml
+        run: .\x64\Debug\StringDiffChecker.exe --gtest_output=xml:test_results.xml
 
       - name: Publish test results
         uses: dorny/test-reporter@v1
