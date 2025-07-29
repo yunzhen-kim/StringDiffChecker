@@ -19,6 +19,9 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
 
+      - name: Restore NuGet packages
+        run: nuget restore StringDiffChecker.sln
+
       - name: Build solution
         run: msbuild StringDiffChecker.sln /p:Configuration=Debug
 
