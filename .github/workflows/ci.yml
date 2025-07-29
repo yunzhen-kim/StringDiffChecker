@@ -34,7 +34,7 @@ jobs:
         with:
           name: GoogleTest Results
           path: test_results.xml
-          reporter: google-test
+          reporter: junit
 
       - name: Approve PR if all tests passed
         if: ${{ github.event_name == 'pull_request' && success() }}
