@@ -1,0 +1,45 @@
+name: Build & Test on Push and PR (all branches)
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Build solution
+        run: msbuild StringDiffChecker.sln /p:Configuration=Debug
+
+      - name: Run GoogleTest
+        run: .\Tests\x64\Debug\StringDiffChecker.exe --gtest_output=xml:test_results.xml
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: GoogleTest Results
+          path: test_results.xml
+          reporter: google-test
+
+      - name: Approve PR if all tests passed
+        if: ${{ github.event_name == 'pull_request' && success() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PR_APPROVE_TOKEN }}
+        run: |
+          curl -s -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews \
+            -d '{"event":"APPROVE"}'
