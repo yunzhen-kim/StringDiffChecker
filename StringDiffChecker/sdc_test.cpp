@@ -20,3 +20,9 @@ TEST_F(SdcFixture, checkScoreCase) {
 	checkScore("AA", "AAE", 62);
 	checkScore("AAAAAAAAAAAAA", "ASGB", 33);
 }
+
+TEST_F(SdcFixture, checkScoreEmpty) {
+	checkScore("", "", 60);
+	checkScore("A", "", 0);
+	checkScore("", "B", 0);
+}
