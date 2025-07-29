@@ -20,7 +20,7 @@ jobs:
         run: nuget restore StringDiffChecker.sln
 
       - name: Build solution
-        run: msbuild StringDiffChecker.sln /p:Configuration=Debug
+        run: msbuild StringDiffChecker.sln /p:Configuration=Debug /p:platform=x86
 
       - name: Run GoogleTest
         run: |
